@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+	<head> <title>Chatterbox-Online</title> 
+	<script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-firestore.js"></script>
+	 <script src="https://www.gstatic.com/firebasejs/live/3.1/firebase.js"></script>
+	  <link href="https://fonts.googleapis.com/css?family=Yeon+Sung&display=swap" rel="stylesheet">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+	   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> 
+	   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="style.css"> </head>
+		<link href="https://fonts.googleapis.com/css2?family=Train+One&display=swap" rel="stylesheet">
+<body style="background-color: grey;">
+    <center>
+<div class="container">
+<button id="logout" onclick="logout()" class="glyphicon glyphicon-log-out btn btn-danger">Logout</button>
+	<center>
+		<h1 style="font-family: 'Train One', cursive; color: #fff;">Welcome <span id="unop" style="color: #fff; font-family: 'Train One', cursive;"></span>!</h1>
+		<h1 class="header">	
+			Digital School Chat
+			<sup>
+				<img style="width:10%;" src="idc.png">
+			</sup>
+		</h1>
+    <p>Chat while you sit...</p>
+
+		<h3 class="color_white"></h3		<div class="form-group input_div_room_page">
+			<label>Add Room:</label>
+			<input type="text" class="form-control" id="room-name">
+		</div>
+		<button class="btn btn-success" onclick="ar()">Add Room</button>
+		<h3 class="color_white">#TRENDINGROOMS</h3>
+		<div id="output"></div>
+	</center>
+</div>
+<script>
+    //ADD YOUR FIREBASE LINKS
+ // Your web app's Firebase configuration
+ var firebaseConfig = {
+    apiKey: "AIzaSyD2JS4G2vkvvlfuW5nuYb2mtVu_If5tejk",
+    authDomain: "nono-dc408.firebaseapp.com",
+    databaseURL: "https://nono-dc408-default-rtdb.firebaseio.com",
+    projectId: "nono-dc408",
+    storageBucket: "nono-dc408.appspot.com",
+    messagingSenderId: "735930495140",
+    appId: "1:735930495140:web:ff4a67aa3859974c737631"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  user_name = localStorage.getItem("un");
+
+document.getElementById("unop").innerHTML = user_name + "!";
+
+function ar()
+{
+  room_name = document.getElementById("room-name").value;
+
+  firebase.database().ref("/").child(room_name).update({
+    purpose : "adding room name"
+  });
+
+    localStorage.setItem("room_name", room_name);
+    
+    window.location = "chatterbox.html";
+}
+
+function getData() {  firebase.database().ref("/").on('value', function(snapshot) { document.getElementById("output").innerHTML = ""; snapshot.forEach(function(childSnapshot) { childKey  = childSnapshot.key;
+       Room_names = childKey;
+       console.log("Room Name - " + Room_names);
+      row = "<div class='room_name' id="+Room_names+" onclick='redirectToRoomName(this.id)' >#"+ Room_names +"</div><hr>";
+      document.getElementById("output").innerHTML += row;
+    });
+  });
+
+}
+
+getData();
+
+function redirectToRoomName(name)
+{
+  console.log(name);
+  localStorage.setItem("room_name", name);
+    window.location = "chatterbox.html";
+}
+
+function logout() {
+localStorage.removeItem("un");
+localStorage.removeItem("room_name");
+    window.location = "index.html";
+}
+</script>
+</body>
+</html>
